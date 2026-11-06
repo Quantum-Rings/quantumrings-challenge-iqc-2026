@@ -81,7 +81,8 @@ the unseen hold-out. Set aside a validation set to estimate that score, then
 retrain on all the training data for your final submission. Note that
 `score.py` scores every label and counts a missing prediction as 0, so to score
 a validation set, filter the labels to those circuits or compute the metric
-yourself.
+yourself. See [Reference scores](../README.md#reference-scores) in the main
+README for scores to compare against.
 
 ## How the automated third is scored
 

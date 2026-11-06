@@ -85,9 +85,9 @@ full credit on it.
 
 | Source | Circuits | Focus |
 |---|---|---|
-| MQT Bench | 179 | Algorithmic benchmarks, each algorithm swept across sizes (2–260 qubits) |
+| MQT Bench | 180 | Algorithmic benchmarks, each algorithm swept across sizes (2–260 qubits) |
 | QASMBench | 80 | Application benchmarks (small / medium / large tiers) |
-| Quantinuum | 83 | Challenge circuits across 5 families |
+| Quantinuum | 82 | Challenge circuits across 5 families |
 | Google Quantum Supremacy 2019 | 190 | Sycamore random circuits, full + elided variants, 12–53 qubits |
 
 - **Circuits:** [`train-circuits/`](train-circuits/), one
@@ -99,6 +99,9 @@ full credit on it.
   `status` (`success` / `timeout`), plus the fixed run settings (`shots`,
   `backend`, `precision`). There is one prediction target, the runtime in
   seconds; a `timeout` row counts as ≥21,600 s.
+- **Missing runs:** 12 of the 2,660 `(circuit, threshold)` runs have no row,
+  because the simulator crashes when trying to run them. As a result, a few circuits have
+  labels for fewer than five thresholds.
 - **Qubit cap:** 260
 
 ### Getting the raw `.qasm` files
@@ -161,6 +164,22 @@ the 6-hour cap, so you "predict a timeout" simply by predicting a duration ≥ t
 
 **Speed** is measured too: your parser and inference must stay under the per-circuit
 cutoff (see *What you build*). Runs over the cutoff may be penalized.
+
+### Reference scores
+
+Automated scores for two reference models, to give you a sense of scale:
+
+| Model | Train (cross-validated) | Hold-out |
+|---|---|---|
+| Trivial baseline: predict median train runtime for each threshold | 28.4% | 27.4% |
+| Our internal model | 82.0% | 77.9% |
+
+A model scoring below the trivial baseline has learned less than ignoring the
+circuit entirely.
+
+For reference, our internal model extracts 131 total features from each circuit. Not
+all of them help, so feature pruning narrows these down to 25 used in the
+final model.
 
 ### Subjective — how you got there (2/3)
 
